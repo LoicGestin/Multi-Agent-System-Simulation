@@ -44,7 +44,7 @@ public class Balls {
             int pos_y = this.direct_Y.get(i) ? this.balls.get(i).y - dy : dy + this.balls.get(i).y;
 
             if(pos_x > limit_x || pos_x < 0){
-                this.direct_X.add(i,!this.direct_X.get(i));
+                this.direct_X.set(i,!this.direct_X.get(i));
             }
             if(pos_y > limiy_y || pos_y < 0){
                 this.direct_Y.add(i,!this.direct_Y.get(i));
@@ -57,6 +57,8 @@ public class Balls {
     public void reInit(){
         for (int i = 0; i < this.balls.size() ; i++) {
             this.balls.get(i).setLocation(this.posX.get(i), this.posY.get(i));
+            this.direct_X.add(i,false);
+            this.direct_Y.add(i,false);
         }
     }
 

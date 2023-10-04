@@ -18,9 +18,7 @@ public class BallsSimulator implements Simulable {
     }
     @Override
     public void next() {
-        int randX = (int) (Math.random() * (20));
-        int randY = (int) (Math.random() * (20));
-        this.balls.translate(10,10,gui.getPanelWidth(),gui.getPanelHeight());
+        this.balls.translate(10,10,500,500);
         this.draw();
 
     }
@@ -45,18 +43,5 @@ public class BallsSimulator implements Simulable {
     }
 
 
-    public static void main(String[] args) {
 
-
-        Balls balls = new Balls();
-        balls.add_ball(new Point(50,96));
-        balls.add_ball(new Point(75,45));
-        balls.add_ball(new Point(200,52));
-
-
-        GUISimulator gui = new GUISimulator (500 , 600 , Color.BLACK ) ;
-        gui.setSimulable ( new BallsSimulator(balls, gui)) ;
-
-
-    }
 }

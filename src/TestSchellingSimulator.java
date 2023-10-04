@@ -2,7 +2,7 @@ import gui.GUISimulator;
 
 import java.awt.*;
 
-public class TestSchelling {
+public class TestSchellingSimulator  {
     public static void main(String[] args) {
         int k = 4;
         int nombre_famille = 2;
