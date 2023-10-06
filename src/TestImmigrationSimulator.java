@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class TestImmigrationSimulator {
     public static void main(String[] args) {
-        BasicGame immigration = new Immigration(30,30);
+        Immigration immigration = new Immigration(30,30);
         /*
         gameOfLife.make_alive(3,1);
         gameOfLife.make_alive(2,2);
@@ -42,6 +42,6 @@ public class TestImmigrationSimulator {
         immigration.make_alive(4+5,4+5,1);
 
         GUISimulator gui = new GUISimulator (750 , 750 , Color.BLACK ) ;
-        gui.setSimulable ( new BasicGameSimulator(immigration, gui)) ;
+        gui.setSimulable ( new GameSimulator(immigration, gui)) ;
     }
 }

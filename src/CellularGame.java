@@ -1,12 +1,14 @@
+import gui.GUISimulator;
+
 import java.awt.*;
 
-public abstract class BasicGame {
+public abstract class CellularGame implements Game{
     private int[][] grid;
     private int[][] initial_grid;
     private final int n;
     private final int m;
 
-    public BasicGame(int n, int m){
+    public CellularGame(int n, int m){
         this.grid = new int[n][m];
         this.initial_grid = new int[n][m];
         this.n = n;
@@ -58,4 +60,18 @@ public abstract class BasicGame {
     }
     public int getN() {return n;}
     public int getM() {return m;}
+    public void draw(GUISimulator gui){
+        gui.reset();
+
+        for (int i = 0; i < this.n; i++) {
+            for (int j = 0; j < this.m; j++) {
+                gui.addGraphicalElement(new gui.Rectangle(
+                        25 +j * (gui.getPanelWidth() / this.n),
+                        25 + i * (gui.getPanelHeight() / this.m),
+                        Color.GRAY,
+                        this.getColor(i,j),
+                        gui.getPanelHeight() / m));
+            }
+        }
+    }
 }

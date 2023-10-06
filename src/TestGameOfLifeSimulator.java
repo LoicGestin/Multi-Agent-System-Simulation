@@ -5,7 +5,7 @@ import java.awt.*;
 public class TestGameOfLifeSimulator {
     public static void main(String[] args) {
 
-        BasicGame gameOfLife = new GameOfLife(30,30);
+        GameOfLife gameOfLife = new GameOfLife(30,30);
         /*
         gameOfLife.make_alive(3,1);
         gameOfLife.make_alive(2,2);
@@ -26,6 +26,6 @@ public class TestGameOfLifeSimulator {
         gameOfLife.make_alive(9,9,1);
 
         GUISimulator gui = new GUISimulator (750 , 750 , Color.BLACK ) ;
-        gui.setSimulable ( new BasicGameSimulator(gameOfLife, gui)) ;
+        gui.setSimulable ( new GameSimulator(gameOfLife, gui)) ;
     }
 }

@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class GameOfLife extends BasicGame {
+public class GameOfLife extends CellularGame {
 
     public GameOfLife(int n, int m){
         super(n,m);

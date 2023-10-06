@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-public class Schelling extends BasicGame {
+public class Schelling extends CellularGame {
 
     private HashMap<String, Boolean> vacant;
 

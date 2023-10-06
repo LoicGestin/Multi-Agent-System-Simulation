@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Immigration extends BasicGame{
+public class Immigration extends CellularGame{
     public Immigration(int n, int m) {
         super(n, m);
     }
