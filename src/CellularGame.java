@@ -74,4 +74,9 @@ public abstract class CellularGame implements Game{
             }
         }
     }
+
+    @Override
+    public void setUpEvent(EventManager eventManager) {
+        eventManager.addEvent(new ActionEvent(0,eventManager,0,this));
+    }
 }

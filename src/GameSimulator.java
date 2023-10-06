@@ -12,7 +12,7 @@ public class GameSimulator implements Simulable {
         this.gui = gui;
 
         this.eventManager = new EventManager();
-        this.eventManager.addEvent(new ActionEvent(0,eventManager,0,this.game));
+        this.game.setUpEvent(eventManager);
 
         this.game.draw(gui);
 
@@ -31,7 +31,7 @@ public class GameSimulator implements Simulable {
         this.game.reInit();
 
         this.eventManager.restart();
-        this.eventManager.addEvent(new ActionEvent(0,eventManager,0,this.game));
+        this.game.setUpEvent(eventManager);
 
         this.game.draw(gui);
     }

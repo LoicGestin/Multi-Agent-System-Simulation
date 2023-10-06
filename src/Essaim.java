@@ -5,7 +5,7 @@ import gui.Triangle;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Essaim implements Game{
+public abstract class Essaim extends GroupeEssaim{
     private ArrayList<Boid> boids;
     private ArrayList<Boid> init_boids;
     private final double distance;
@@ -17,7 +17,10 @@ public class Essaim implements Game{
     private int Ymin;
 
     private int size;
-    public Essaim(double distance, int size, double vlim, int Xmax, int Xmin, int Ymax, int Ymin){
+
+    private Color color;
+
+    public Essaim(double distance, int size, double vlim, int Xmax, int Xmin, int Ymax, int Ymin, Color color){
         this.boids = new ArrayList<>();
         this.init_boids = new ArrayList<>();
         this.distance = distance;
@@ -28,6 +31,10 @@ public class Essaim implements Game{
         this.Ymax = Ymax;
         this.Ymin = Ymin;
         this.size = size;
+
+        this.color = color;
+
+
         /*for (int i = 0; i < nombreBoids; i++) {
             Vector position = new Vector(Math.random(), Math.random());
             Vector vitesse = new Vector(Math.random() - 0.5, Math.random() - 0.5);
@@ -154,7 +161,7 @@ public class Essaim implements Game{
 
     @Override
     public void draw(GUISimulator gui) {
-        gui.reset();
+
         for (Boid boid : this.boids) {
             double x = boid.getPosition().getX();
             double y = boid.getPosition().getY();
@@ -177,7 +184,7 @@ public class Essaim implements Game{
                     (int) (y - this.size * Math.sin(angle - Math.PI / 6))
             };
 
-            gui.addGraphicalElement(new Triangle(xPoints, yPoints, Color.GRAY, Color.RED));
+            gui.addGraphicalElement(new Triangle(xPoints, yPoints, Color.GRAY, this.color));
         }
         /*
         for (int i = 0; i < this.boids.size(); i++) {
@@ -193,6 +200,11 @@ public class Essaim implements Game{
 
          */
     }
+
+    @Override
+    public abstract void setUpEvent(EventManager eventManager);
+
+
 
     @Override
     public String toString() {

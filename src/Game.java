@@ -7,4 +7,6 @@ public interface Game {
     void update();
     void draw(GUISimulator gui);
 
+    void setUpEvent(EventManager eventManager);
+
 }
