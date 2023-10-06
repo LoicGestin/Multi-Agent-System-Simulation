@@ -5,9 +5,10 @@ import gui.Triangle;
 import java.awt.*;
 import java.util.ArrayList;
 
-public abstract class Essaim extends GroupeEssaim{
-    private ArrayList<Boid> boids;
-    private ArrayList<Boid> init_boids;
+public abstract class Essaim implements Game{
+    ArrayList<Boid> boids = new ArrayList<>();
+    private final ArrayList<Essaim> others = new ArrayList<>();
+    private final ArrayList<Boid> init_boids = new ArrayList<>();
     private final double distance;
 
     private double vlim;
@@ -20,9 +21,9 @@ public abstract class Essaim extends GroupeEssaim{
 
     private Color color;
 
-    public Essaim(double distance, int size, double vlim, int Xmax, int Xmin, int Ymax, int Ymin, Color color){
-        this.boids = new ArrayList<>();
-        this.init_boids = new ArrayList<>();
+    private String name;
+
+    public Essaim(double distance, int size, double vlim, int Xmax, int Xmin, int Ymax, int Ymin, Color color, String name){
         this.distance = distance;
         this.vlim = vlim;
 
@@ -33,18 +34,20 @@ public abstract class Essaim extends GroupeEssaim{
         this.size = size;
 
         this.color = color;
+        this.name = name;
 
-
-        /*for (int i = 0; i < nombreBoids; i++) {
-            Vector position = new Vector(Math.random(), Math.random());
-            Vector vitesse = new Vector(Math.random() - 0.5, Math.random() - 0.5);
-            this.boids.add(new Boid(position, vitesse));
-        }*/
     }
 
     public void addBoid(Vector poistion, Vector vitesse){
         this.boids.add(new Boid(poistion,vitesse));
         this.init_boids.add(new Boid(poistion,vitesse));
+    }
+    public void addEsseim(Essaim essaim){
+        this.others.add(essaim);
+    }
+
+    public ArrayList<Essaim> getOthers() {
+        return others;
     }
 
     public Vector rule1(Boid boid){
@@ -147,19 +150,22 @@ public abstract class Essaim extends GroupeEssaim{
 
     }
 
-    @Override
+    public double getVlim() {
+        return vlim;
+    }
+
     public void reInit() {
         for (int i = 0; i < this.boids.size(); i++) {
             this.boids.get(i).replace(this.init_boids.get(i));
         }
     }
 
-    @Override
+
     public void update() {
         this.move_all_boids_to_new_position();
     }
 
-    @Override
+
     public void draw(GUISimulator gui) {
 
         for (Boid boid : this.boids) {
@@ -186,25 +192,22 @@ public abstract class Essaim extends GroupeEssaim{
 
             gui.addGraphicalElement(new Triangle(xPoints, yPoints, Color.GRAY, this.color));
         }
-        /*
-        for (int i = 0; i < this.boids.size(); i++) {
-
-
-                gui.addGraphicalElement(new gui.Rectangle(
-                        (int) this.boids.get(i).getPosition().getX(),
-                        (int) this.boids.get(i).getPosition().getY(),
-                        Color.GRAY,
-                        Color.RED,
-                        40));
-        }
-
-         */
     }
 
-    @Override
+
     public abstract void setUpEvent(EventManager eventManager);
 
+    public ArrayList<Boid> getBoids() {
+        return boids;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
 
     @Override
     public String toString() {
@@ -212,6 +215,10 @@ public abstract class Essaim extends GroupeEssaim{
                 "boids=" + boids +
                 ", init_boids=" + init_boids +
                 ", distance=" + distance +
+                ", vlim=" + vlim +
+                ", size=" + size +
+                ", color=" + color +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

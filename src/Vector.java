@@ -25,6 +25,14 @@ public class Vector {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
+    public void normalize(){
+        double magnitude = this.magnitude();
+        if(magnitude != 0 ){
+            this.x /= magnitude;
+            this.y /= magnitude;
+        }
+    }
+
     public double getX() {
         return x;
     }

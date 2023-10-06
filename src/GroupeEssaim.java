@@ -11,7 +11,12 @@ public class GroupeEssaim implements Game{
     }
 
     public void addEsaim(Essaim essaim){
+        for (Essaim e: this.essaims) {
+            e.addEsseim(essaim);
+            essaim.addEsseim(e);
+        }
         this.essaims.add(essaim);
+
     }
     @Override
     public void reInit() {
@@ -40,4 +45,17 @@ public class GroupeEssaim implements Game{
             essaim.setUpEvent(eventManager);
         }
     }
+
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (Essaim essaim: this.essaims
+             ) {
+                result.append(essaim.toString());
+        }
+        return result.toString();
+    }
+
+
 }

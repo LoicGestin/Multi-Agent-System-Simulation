@@ -21,7 +21,7 @@ public class TestEssaimSimulator {
 
         Essaim essaim2 = new Saumons(900,100,900,100);
         essaim2.addBoid(new Vector(250,220),new Vector(1,5));
-        essaim2.addBoid(new Vector(500,130),new Vector(3,-2));
+        essaim2.addBoid(new Vector(500,130),new Vector(3,5));
         essaim2.addBoid(new Vector(320,280),new Vector(-6,2));
         essaim2.addBoid(new Vector(450,620),new Vector(-2,5));
 
