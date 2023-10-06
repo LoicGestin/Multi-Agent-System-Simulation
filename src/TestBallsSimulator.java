@@ -7,6 +7,8 @@ public class TestBallsSimulator {
 
 
 
+
+
         Balls balls = new Balls();
         balls.add_ball(new Point(50,300));
         balls.add_ball(new Point(75,45));

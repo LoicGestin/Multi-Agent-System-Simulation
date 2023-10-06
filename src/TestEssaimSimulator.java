@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class TestEssaimSimulator {
     public static void main(String[] args) {
-        Essaim essaim = new Essaim(300,30,20, 900,100,900,100);
+        Essaim essaim = new Essaim(150,30,20, 900,100,900,100);
         essaim.addBoid(new Vector(200,200),new Vector(4,6));
         essaim.addBoid(new Vector(150,100),new Vector(1,2));
         essaim.addBoid(new Vector(300,150),new Vector(5,1));

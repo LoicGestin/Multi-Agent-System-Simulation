@@ -5,10 +5,12 @@ import gui.Simulable;
 import java.awt.*;
 import java.util.Random;
 
-public class BallsSimulator implements Simulable {
-    private Balls balls;
+public class BallsSimulator implements Simulable{
+    private final Balls balls;
 
-    private GUISimulator gui;
+    private final GUISimulator gui;
+
+    private final EventManager manager = new EventManager();
     public BallsSimulator(Balls balls,GUISimulator gui){
         this.gui = gui;
         this.balls = balls;
