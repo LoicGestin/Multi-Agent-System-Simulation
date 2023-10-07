@@ -9,6 +9,9 @@ public abstract class Essaim implements Game{
     ArrayList<Boid> boids = new ArrayList<>();
     private final ArrayList<Essaim> others = new ArrayList<>();
     private final ArrayList<Boid> init_boids = new ArrayList<>();
+
+    private ArrayList<String> proies;
+    private ArrayList<String> predateurs;
     private final double distance;
 
     private double vlim;
@@ -23,7 +26,7 @@ public abstract class Essaim implements Game{
 
     private String name;
 
-    public Essaim(double distance, int size, double vlim, int Xmax, int Xmin, int Ymax, int Ymin, Color color, String name){
+    public Essaim(double distance, int size, double vlim, int Xmax, int Xmin, int Ymax, int Ymin, Color color, String name, ArrayList<String> proies, ArrayList<String> predateurs){
         this.distance = distance;
         this.vlim = vlim;
 
@@ -35,7 +38,8 @@ public abstract class Essaim implements Game{
 
         this.color = color;
         this.name = name;
-
+        this.predateurs = predateurs;
+        this.proies = proies;
     }
 
     public void addBoid(Vector poistion, Vector vitesse){
@@ -104,13 +108,58 @@ public abstract class Essaim implements Game{
         return new Vector(0,0);
 
     }
+    public Vector rule4(Boid boid){
+        Vector pv = new Vector(0,0);
+        double min = this.getDistance();
+        ArrayList<Essaim> essaims = this.getOthers();
+        for(Essaim essaim : essaims) {
 
+            if(proies.contains(essaim.getName())){
+
+                for (Boid b : essaim.getBoids()) {
+                    if (b != boid) {
+                        double distance = boid.getPosition().soustraction(b.getPosition()).magnitude();
+                        if (Math.abs(distance) < min) {
+                            pv = b.getPosition().soustraction(boid.getPosition());
+                            pv.normalize();
+                            pv = pv.multiplication(this.getVlim() / 2);
+                            min = Math.abs(distance);
+                        }
+                    }
+                }
+            }
+        }
+        return pv;
+    }
+    public Vector rule5(Boid boid){
+
+        Vector bestDirection = new Vector(0,0);
+        ArrayList<Essaim> essaims = this.getOthers();
+        for(Essaim essaim : essaims) {
+            if(predateurs.contains(essaim.getName())){
+
+                for (Boid b : essaim.getBoids()) {
+                    if (b != boid) {
+                        double distance = boid.getPosition().soustraction(b.getPosition()).magnitude();
+                        if (Math.abs(distance) < this.getDistance()) {
+                            Vector tampon = boid.getPosition().soustraction(b.getPosition());
+
+                            tampon.normalize();
+                            bestDirection = bestDirection.addition(tampon);
+                        }
+                    }
+                }
+            }
+        }
+
+        bestDirection.normalize();
+        return bestDirection.multiplication(this.getVlim());
+    }
     public void limit_velocity(Boid b){
         if(b.getVitesse().magnitude() > vlim){
             b.setVitesse(b.getVitesse().division(b.getVitesse().magnitude()).multiplication(vlim));
         }
     }
-
     public Vector bound_position(Boid b){
         Vector v = new Vector(0,0);
         if(b.getPosition().getX() < Xmin){
@@ -134,20 +183,47 @@ public abstract class Essaim implements Game{
 
         for (int i = 0; i < this.boids.size() ; i++) {
             Boid b = this.boids.get(i).copy();
-            Vector v1 = rule1(b);
-            Vector v2 = rule2(b);
-            Vector v3 = rule3(b);
 
-            cache_boid.get(i).setVitesse(b.getVitesse().addition(v1).addition(v2).addition(v3));
-            cache_boid.get(i).setPosition(b.getPosition().addition(b.getVitesse()));
-            this.limit_velocity(cache_boid.get(i));
+            ArrayList<Vector> vectors = rules(b);
+            ArrayList<Vector> priority_rules = priority_rules(b);
+            boolean priority = false;
+            for (Vector v: priority_rules) {
+                if(v.getX() != 0 || v.getY() != 0){
+                    cache_boid.get(i).setVitesse(v);
+                    priority = true;
+                    break;
+                }
+            }
+            if(!priority){
+                Vector vector = new Vector(0,0);
+                for (Vector v: vectors) {
+                    vector = vector.addition(v);
+                }
+                cache_boid.get(i).setVitesse(b.getVitesse().addition(vector));
+            }
             cache_boid.get(i).setVitesse(cache_boid.get(i).getVitesse().addition(this.bound_position(cache_boid.get(i))));
+            this.limit_velocity(cache_boid.get(i));
+
+            cache_boid.get(i).setPosition(b.getPosition().addition(cache_boid.get(i).getVitesse()));
 
         }
 
         this.boids = cache_boid;
+    }
 
+    public ArrayList<Vector> rules(Boid boid){
+        ArrayList<Vector> vectors = new ArrayList<>();
+        vectors.add(rule1(boid));
+        vectors.add(rule2(boid));
+        vectors.add(rule3(boid));
 
+        return vectors;
+    }
+    public ArrayList<Vector> priority_rules(Boid boid){
+        ArrayList<Vector> vectors = new ArrayList<>();
+        vectors.add(rule5(boid));
+        vectors.add(rule4(boid));
+        return vectors;
     }
 
     public double getVlim() {
