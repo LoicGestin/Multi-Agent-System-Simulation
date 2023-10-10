@@ -4,6 +4,9 @@ import gui.Triangle;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
+
+
 
 public abstract class Essaim implements Game{
     ArrayList<Boid> boids = new ArrayList<>();
@@ -50,27 +53,38 @@ public abstract class Essaim implements Game{
         this.others.add(essaim);
     }
 
+    public void genereEsseim(int number){
+        Random random = new Random();
+        for (int i = 0; i < number ; i++) {
+            Vector v1 = new Vector( random.nextInt(Xmax),random.nextInt(Ymax));
+            int b1 = random.nextInt(2) == 1 ? -1 : 1;
+            int b2 = random.nextInt(2) == 1 ? -1 : 1;
+            Vector v2 = new Vector( b1 * random.nextInt((int) this.vlim) + b1,b2 * random.nextInt((int) this.vlim) + b2);
+
+            this.boids.add(new Boid(v1,v2));
+            this.init_boids.add(new Boid(v1,v2));
+        }
+    }
+
     public ArrayList<Essaim> getOthers() {
         return others;
     }
 
     public Vector rule1(Boid boid){
+        double angleDeVue = Math.PI ;
+        ArrayList<Boid> voisins = getVoisinsAvecAngle(boid, angleDeVue, this.distance);
+
         Vector pc = new Vector(0,0);
         int count = 0;
-        for (Boid b: this.boids) {
-            if(b != boid) {
-                double distance = boid.getPosition().soustraction(b.getPosition()).magnitude();
-                if (Math.abs(distance)< this.distance) {
-                    pc = pc.addition(b.getPosition());
-                    count ++;
-                }
-            }
+        for (Boid b: voisins) {
+            pc = pc.addition(b.getPosition());
+            count ++;
         }
         if(count >= 1){
 
             pc = pc.division(count);
             pc = pc.soustraction(boid.getPosition());
-            pc = pc.division(100);
+            pc = pc.division(700);
         }
         return pc;
 
@@ -78,28 +92,24 @@ public abstract class Essaim implements Game{
     }
     public Vector rule2(Boid boid){
         Vector c = new Vector(0,0);
-        for (Boid b: this.boids) {
-            if(b != boid){
-                double distance = b.getPosition().soustraction(boid.getPosition()).magnitude();
-                if (Math.abs(distance) < 7) {
 
-                    c = c.soustraction( b.getPosition().soustraction(boid.getPosition()));
-                }
-            }
+        double angleDeVue = Math.PI ;
+        ArrayList<Boid> voisins = getVoisinsAvecAngle(boid, angleDeVue, 30);
+
+        for (Boid b: voisins) {
+            c = c.soustraction( b.getPosition().soustraction(boid.getPosition()));
         }
-        return c;
+        return c.division(10);
     }
     public Vector rule3(Boid boid){
         Vector pv = new Vector(0,0);
+        double angleDeVue = Math.PI ;
+        ArrayList<Boid> voisins = getVoisinsAvecAngle(boid, angleDeVue, this.distance);
         int count = 0;
-        for (Boid b: this.boids) {
-            if(b != boid) {
-                double distance = boid.getPosition().soustraction(b.getPosition()).magnitude();
-                if (Math.abs(distance) < this.distance) {
-                    pv = pv.addition(b.getVitesse());
-                    count ++;
-                }
-            }
+        for (Boid b: voisins) {
+            pv = pv.addition(b.getVitesse());
+            count ++;
+
         }
         if(count >= 1){
             pv = pv.division(count);
@@ -155,26 +165,65 @@ public abstract class Essaim implements Game{
         bestDirection.normalize();
         return bestDirection.multiplication(this.getVlim());
     }
-    public void limit_velocity(Boid b){
-        if(b.getVitesse().magnitude() > vlim){
+    public ArrayList<Boid> getVoisinsAvecAngle(Boid boid, double angleDeVue, double distanceMax) {
+        angleDeVue = 300;
+        ArrayList<Boid> voisins = new ArrayList<>();
+
+        Vector directionBoid = boid.copy().getVitesse();
+        directionBoid.normalize();
+
+        for (Boid autreBoid : this.boids) {
+            if (autreBoid != boid) {
+                Vector vecteurVersAutreBoid = autreBoid.copy().getPosition().soustraction(boid.getPosition());
+                double angleEntreBoids = Math.acos(directionBoid.dotProduct(vecteurVersAutreBoid) / (directionBoid.magnitude() * vecteurVersAutreBoid.magnitude()));
+                angleEntreBoids = Math.toDegrees(angleEntreBoids); // Conversion en degrés
+                if (angleEntreBoids <= angleDeVue / 2 ) {
+                    if (vecteurVersAutreBoid.magnitude() <= distanceMax) {
+                        voisins.add(autreBoid);
+                    }
+                }
+            }
+        }
+
+        return voisins;
+    }
+
+    public void circle_position(Boid b){
+        if(b.getPosition().getX() > this.Xmax + 100){
+            b.getPosition().setX(0);
+        }
+        else if(b.getPosition().getX() < 0){
+            b.getPosition().setX(this.Xmax + 100);
+        }
+        if(b.getPosition().getY() > this.Ymax + 100){
+            b.getPosition().setY(0);
+        }
+        else if(b.getPosition().getY() < 0){
+            b.getPosition().setY(this.Ymax + 100);
+        }
+
+    }
+
+    public void limit_velocity(Boid b) {
+        if (b.getVitesse().magnitude() > vlim) {
             b.setVitesse(b.getVitesse().division(b.getVitesse().magnitude()).multiplication(vlim));
         }
     }
     public Vector bound_position(Boid b){
         Vector v = new Vector(0,0);
         if(b.getPosition().getX() < Xmin){
-            v.setX(5);
+            v.setX(1);
         }
         else if(b.getPosition().getX() > Xmax){
-            v.setX(-5);
+            v.setX(-1);
         }
 
         if(b.getPosition().getY() < Ymin){
-            v.setY(5);
+            v.setY(1);
         }
         else if(b.getPosition().getY() > Ymax){
 
-            v.setY(-5);
+            v.setY(-1);
         }
         return v;
     }
@@ -201,10 +250,12 @@ public abstract class Essaim implements Game{
                 }
                 cache_boid.get(i).setVitesse(b.getVitesse().addition(vector));
             }
-            cache_boid.get(i).setVitesse(cache_boid.get(i).getVitesse().addition(this.bound_position(cache_boid.get(i))));
+            //cache_boid.get(i).setVitesse(cache_boid.get(i).getVitesse().addition(this.bound_position(cache_boid.get(i))));
             this.limit_velocity(cache_boid.get(i));
 
+
             cache_boid.get(i).setPosition(b.getPosition().addition(cache_boid.get(i).getVitesse()));
+            circle_position(cache_boid.get(i));
 
         }
 
@@ -257,13 +308,13 @@ public abstract class Essaim implements Game{
 
             int[] xPoints = {
                     (int) x,
-                    (int) (x - this.size * Math.cos(angle + Math.PI / 6)),
-                    (int) (x - this.size * Math.cos(angle - Math.PI / 6))
+                    (int) (x - this.size * Math.cos(angle + Math.PI / 7) ),
+                    (int) (x - this.size * Math.cos(angle - Math.PI / 7) )
             };
             int[] yPoints = {
                     (int) y,
-                    (int) (y - this.size * Math.sin(angle + Math.PI / 6)),
-                    (int) (y - this.size * Math.sin(angle - Math.PI / 6))
+                    (int) (y - this.size * Math.sin(angle + Math.PI / 7) ),
+                    (int) (y - this.size * Math.sin(angle - Math.PI / 7) )
             };
 
             gui.addGraphicalElement(new Triangle(xPoints, yPoints, Color.GRAY, this.color));

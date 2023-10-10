@@ -13,7 +13,9 @@ public class Vector {
     public Vector soustraction(Vector vector){
         return new Vector(this.x - vector.x, this.y - vector.y);
     }
-
+    public double dotProduct(Vector other) {
+        return this.x * other.x + this.y * other.y;
+    }
     public Vector division(double divide){
         return new Vector(this.x / divide, this.y / divide);
     }

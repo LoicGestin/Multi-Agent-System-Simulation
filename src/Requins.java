@@ -5,7 +5,7 @@ import java.util.List;
 public class Requins extends Essaim {
 
     public Requins(int Xmax, int Xmin, int Ymax, int Ymin) {
-        super(250, 45, 20, Xmax, Xmin, Ymax, Ymin, Color.RED,"Requins",
+        super(250, 22, 5, Xmax, Xmin, Ymax, Ymin, Color.RED,"Requins",
                 new ArrayList<String>(List.of(new String[]{"Sardines", "Saumons"})),
                 new ArrayList<String>());
     }
