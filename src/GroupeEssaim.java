@@ -46,6 +46,10 @@ public class GroupeEssaim implements Game{
         }
     }
 
+    @Override
+    public void handleClick(int x, int y, int panelX, int panelY) {
+        this.essaims.get(0).addBoid(new Vector(x,y), new Vector(5,5));
+    }
 
     @Override
     public String toString() {

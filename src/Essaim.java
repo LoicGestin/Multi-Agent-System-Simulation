@@ -337,6 +337,11 @@ public abstract class Essaim implements Game{
     }
 
     @Override
+    public void handleClick(int x, int y, int panelX, int panelY) {
+
+    }
+
+    @Override
     public String toString() {
         return "Essaim{" +
                 "boids=" + boids +

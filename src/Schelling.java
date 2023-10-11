@@ -138,4 +138,9 @@ public class Schelling extends CellularGame {
             }
         }
     }
+
+    @Override
+    public int next_etat(int x, int y) {
+        return this.getGrid()[y][x] == 0 ? 1 : 0;
+    }
 }

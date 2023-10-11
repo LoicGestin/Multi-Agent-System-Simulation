@@ -66,8 +66,8 @@ public abstract class CellularGame implements Game{
         for (int i = 0; i < this.n; i++) {
             for (int j = 0; j < this.m; j++) {
                 gui.addGraphicalElement(new gui.Rectangle(
-                        25 +j * (gui.getPanelWidth() / this.n),
-                        25 + i * (gui.getPanelHeight() / this.m),
+                        10 +j * (gui.getPanelWidth() / this.n),
+                        10 + i * (gui.getPanelHeight() / this.m),
                         Color.GRAY,
                         this.getColor(i,j),
                         gui.getPanelHeight() / m));
@@ -79,4 +79,17 @@ public abstract class CellularGame implements Game{
     public void setUpEvent(EventManager eventManager) {
         eventManager.addEvent(new ActionEvent(0,eventManager,0,this));
     }
+
+    @Override
+    public void handleClick(int x, int y, int PanelX, int PanelY) {
+        int block_width = (PanelX / this.n);
+        int block_height = (PanelY / this.n);
+
+        int gridX = x /block_width;
+        int gridY = y / block_height;
+
+        make_alive(gridY,gridX,next_etat(gridX,gridY));
+    }
+
+    public abstract int next_etat(int x, int y);
 }

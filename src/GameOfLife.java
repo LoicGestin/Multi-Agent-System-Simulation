@@ -12,6 +12,11 @@ public class GameOfLife extends CellularGame {
         return this.getGrid()[i][j] == 0 ? Color.white : Color.BLACK;
     }
 
+    @Override
+    public int next_etat(int x, int y) {
+        return this.getGrid()[y][x] == 0 ? 1 : 0;
+    }
+
     public void update(){
         int[][] cache_grid = new int[this.getN()][this.getM()];
 

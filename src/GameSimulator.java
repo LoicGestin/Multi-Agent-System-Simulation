@@ -1,5 +1,9 @@
 import gui.GUISimulator;
 import gui.Simulable;
+import gui.SimulationPanel;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class GameSimulator implements Simulable {
     private final Game game;
@@ -15,10 +19,21 @@ public class GameSimulator implements Simulable {
         this.game.setUpEvent(eventManager);
 
         this.game.draw(gui);
-
-
+        SimulationPanel simulationPanel = this.gui.getSimuPanel();
+        simulationPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int x = e.getX();
+                int y = e.getY();
+                handleMouseClick(x, y);
+            }
+        });
     }
-
+    public void handleMouseClick(int x, int y) {
+        this.game.handleClick(x,y,this.gui.getPanelWidth(), this.gui.getPanelHeight());
+        this.game.draw(gui);
+    }
     @Override
     public void next() {
         //this.game.update();

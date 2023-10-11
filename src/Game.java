@@ -9,4 +9,6 @@ public interface Game {
 
     void setUpEvent(EventManager eventManager);
 
+    void handleClick(int x, int y, int panelX, int panelY);
+
 }

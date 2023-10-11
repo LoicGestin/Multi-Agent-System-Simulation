@@ -6,6 +6,10 @@ public class Immigration extends CellularGame{
     }
 
     @Override
+    public int next_etat(int x, int y) {
+        return (this.getGrid()[y][x] + 1) % 4;
+    }
+    @Override
     public void update() {
         int[][] cache_grid = new int[this.getN()][this.getM()];
 
