@@ -4,6 +4,7 @@ import gui.SimulationPanel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 public class GameSimulator implements Simulable {
     private final Game game;
@@ -27,6 +28,20 @@ public class GameSimulator implements Simulable {
                 int x = e.getX();
                 int y = e.getY();
                 handleMouseClick(x, y);
+            }
+        });
+
+        simulationPanel.addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                int x = e.getX();
+                int y = e.getY();
+                game.handleMouseMotion(x, y, gui);
             }
         });
     }

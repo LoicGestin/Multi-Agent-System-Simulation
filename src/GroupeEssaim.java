@@ -52,6 +52,11 @@ public class GroupeEssaim implements Game{
     }
 
     @Override
+    public void handleMouseMotion(int x, int y, GUISimulator gui) {
+
+    }
+
+    @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
         for (Essaim essaim: this.essaims

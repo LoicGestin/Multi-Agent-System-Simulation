@@ -8,6 +8,11 @@ public abstract class CellularGame implements Game{
     private final int n;
     private final int m;
 
+    private int lastX = 0;
+    private int lastY = 0;
+
+    private boolean start = false;
+
     public CellularGame(int n, int m){
         this.grid = new int[n][m];
         this.initial_grid = new int[n][m];
@@ -16,9 +21,12 @@ public abstract class CellularGame implements Game{
     }
     public void make_alive(int y, int x, int etat){
         this.grid[y][x] = etat;
-        this.initial_grid[y][x] = etat;
+        if(!start) {
+            this.initial_grid[y][x] = etat;
+        }
     }
     public int calcul_voisin(int i, int j, int etat) {
+        start = true;
         int voisin = 0;
 
         int v1 = i == 0 ? this.getN() -1 : i - 1;
@@ -42,8 +50,8 @@ public abstract class CellularGame implements Game{
     }
 
     public void setGrid(int[][] grid) {this.grid = grid;}
-    public void setInitial_grid(int[][] initial_grid) {this.initial_grid = initial_grid;}
     public void reInit(){
+        start = false;
         for (int i = 0; i < this.n ; i++) {
             for (int j = 0; j < this.m; j++) {
                 this.grid[i][j] = this.initial_grid[i][j];
@@ -87,8 +95,41 @@ public abstract class CellularGame implements Game{
 
         int gridX = x /block_width;
         int gridY = y / block_height;
+        if(gridX < this.m && gridY < this.n){
+            make_alive(gridY,gridX,next_etat(gridX,gridY));
+        }
 
-        make_alive(gridY,gridX,next_etat(gridX,gridY));
+    }
+
+    @Override
+    public void handleMouseMotion(int x, int y, GUISimulator gui) {
+
+        int block_width = (gui.getPanelWidth()/ this.n);
+        int block_height = (gui.getPanelHeight() / this.n);
+
+        int gridX = x /block_width;
+        int gridY = y / block_height;
+        if(gridX < this.m && gridY < this.n) {
+            if (lastX != gridX || lastY != gridY) {
+                gui.addGraphicalElement(new gui.Rectangle(
+                        10 + lastX * (gui.getPanelWidth() / this.n),
+                        10 + lastY * (gui.getPanelHeight() / this.m),
+                        Color.GRAY,
+                        this.getColor(lastY, lastX),
+                        gui.getPanelHeight() / m));
+                gui.addGraphicalElement(new gui.Rectangle(
+                        10 + gridX * (gui.getPanelWidth() / this.n),
+                        10 + gridY * (gui.getPanelHeight() / this.m),
+                        Color.RED,
+                        new Color(0.5f, 0f, 0f, 0),
+                        gui.getPanelHeight() / m -1));
+
+                lastX = gridX;
+                lastY = gridY;
+            }
+
+
+        }
     }
 
     public abstract int next_etat(int x, int y);

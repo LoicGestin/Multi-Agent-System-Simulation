@@ -342,6 +342,11 @@ public abstract class Essaim implements Game{
     }
 
     @Override
+    public void handleMouseMotion(int x, int y, GUISimulator gui) {
+
+    }
+
+    @Override
     public String toString() {
         return "Essaim{" +
                 "boids=" + boids +
