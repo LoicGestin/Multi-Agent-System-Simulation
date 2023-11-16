@@ -30,6 +30,8 @@ public abstract class Essaim implements Game{
     private Color color;
     private String name;
 
+    private boolean start = false;
+
     // Constructeur de la classe Essaim
     public Essaim(double distance, int size, double vlim, int Xmax, int Xmin, int Ymax, int Ymin, Color color, String name, ArrayList<String> proies, ArrayList<String> predateurs){
         this.distance = distance;
@@ -49,7 +51,9 @@ public abstract class Essaim implements Game{
     // Méthode pour ajouter un boid à l'essaim
     public void addBoid(Vector poistion, Vector vitesse){
         this.boids.add(new Boid(poistion,vitesse));
-        this.init_boids.add(new Boid(poistion,vitesse));
+        if(!start) {
+            this.init_boids.add(new Boid(poistion, vitesse));
+        }
     }
     // Méthode pour supprimer un boid de l'essaim
     public void deleteBoid(Boid boid){
@@ -298,14 +302,16 @@ public abstract class Essaim implements Game{
     // Réinitialise la position des boids en les remplaçant par leurs positions initiales.
 
     public void reInit() {
-        for (int i = 0; i < this.boids.size(); i++) {
-            this.boids.get(i).replace(this.init_boids.get(i));
+        this.boids.clear();
+        for (Boid init_boid : this.init_boids) {
+            this.boids.add(init_boid.copy());
         }
     }
 
     // Met à jour la position des boids en appelant la méthode interne move_all_boids_to_new_position().
     public void update() {
         this.move_all_boids_to_new_position();
+        this.start = true;
     }
 
     // Dessine les boids sur l'interface graphique donnée (GUI).
