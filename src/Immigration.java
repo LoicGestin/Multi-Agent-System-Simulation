@@ -17,10 +17,6 @@ public class Immigration extends CellularGame{
             for (int j = 0; j < this.getM(); j++) {
                 int next_etat = (this.getGrid()[i][j] + 1) % 4;
                 int voisin = this.calcul_voisin(i,j, next_etat);
-                if(i == 5 && j == 7 ){
-                    System.out.println(voisin);
-                }
-
                 cache_grid[i][j] = voisin >= 3 ? (this.getGrid()[i][j] + 1 )% 4 : this.getGrid()[i][j];
             }
         }

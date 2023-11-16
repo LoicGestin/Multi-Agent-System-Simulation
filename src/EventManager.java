@@ -15,8 +15,6 @@ public class EventManager {
     }
     public void next(){
 
-        currentDate ++;
-        //System.out.println("Next... Current date : " + this.currentDate);
         ArrayList<Event> eventsToExecute = new ArrayList<>();
 
         for (Event e: this.events) {
@@ -31,6 +29,7 @@ public class EventManager {
             e.execute();
             this.events.remove(e);
         }
+        currentDate ++;
     }
     public boolean isFinished(){
        return this.events.isEmpty();

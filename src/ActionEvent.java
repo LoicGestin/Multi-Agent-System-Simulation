@@ -10,6 +10,8 @@ public class ActionEvent extends Event{
         this.game = game;
     }
 
+
+    // Méthode exécutée lorsqu'un événement d'action est déclenché
     @Override
     public void execute() {
         this.game.update();

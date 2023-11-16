@@ -49,6 +49,9 @@ public abstract class Essaim implements Game{
         this.boids.add(new Boid(poistion,vitesse));
         this.init_boids.add(new Boid(poistion,vitesse));
     }
+    public void deleteBoid(Boid boid){
+        this.boids.remove(boid);
+    }
     public void addEsseim(Essaim essaim){
         this.others.add(essaim);
     }

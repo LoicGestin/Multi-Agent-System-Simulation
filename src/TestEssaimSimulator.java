@@ -19,9 +19,11 @@ public class TestEssaimSimulator {
         essaim2.genereEsseim(150);
         essaim.genereEsseim(150);
         essaim3.genereEsseim(5);
+
+        groupeEssaim.addEsaim(essaim3);
         groupeEssaim.addEsaim(essaim);
         groupeEssaim.addEsaim(essaim2);
-        groupeEssaim.addEsaim(essaim3);
+
 
 
         GUISimulator gui = new GUISimulator (1500 , 1000 , Color.BLACK ) ;
