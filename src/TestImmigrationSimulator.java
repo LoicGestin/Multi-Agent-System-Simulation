@@ -4,13 +4,14 @@ import java.awt.*;
 
 public class TestImmigrationSimulator {
     public static void main(String[] args) {
-        Immigration immigration = new Immigration(30,30);
+        Immigration immigration = new Immigration(30,30,5);
         /*
         gameOfLife.make_alive(3,1);
         gameOfLife.make_alive(2,2);
         gameOfLife.make_alive(2,3);
         gameOfLife.make_alive(1,2);
         */
+        immigration.fillRandomStates();
         immigration.make_alive(0+ 4,0+5,1);
         immigration.make_alive(0+ 4,1+5,1);
 
