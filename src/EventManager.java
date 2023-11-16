@@ -1,18 +1,16 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
+// La classe EventManager gère une liste d'événements et les exécute dans l'ordre chronologique.
 public class EventManager {
+    // Date actuelle de la simulation.
     private long currentDate = 0;
-
-    private ArrayList<Event> events = new ArrayList<>();
-
+    // Utilisation d'une file de priorité pour maintenir les événements triés par date.
+    private PriorityQueue<Event> events = new PriorityQueue<>(Comparator.comparingLong(Event::getDate));
+    // Ajoute un événement à la file de priorité.
     public void addEvent(Event event){
         this.events.add(event);
-        events.sort(Comparator.comparingLong(Event::getDate));
-
     }
+    // Exécute tous les événements dont la date est égale à la date actuelle.
     public void next(){
 
         ArrayList<Event> eventsToExecute = new ArrayList<>();
@@ -31,9 +29,13 @@ public class EventManager {
         }
         currentDate ++;
     }
+    // Vérifie si la file d'événements est vide, indiquant que la simulation est terminée.
+
     public boolean isFinished(){
        return this.events.isEmpty();
     }
+    // Réinitialise le gestionnaire d'événements en remettant la date à zéro et en vidant la file.
+
     public void restart(){
         currentDate = 0;
         events.clear();
