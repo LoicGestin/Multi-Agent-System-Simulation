@@ -6,7 +6,7 @@ import java.util.List;
 public class Sardines extends Essaim {
     // Constructeur de la classe Sardines qui initialise les propriétés de l'essaim de sardines.
     public Sardines(int Xmax, int Xmin, int Ymax, int Ymin) {
-        super(100, 10, 3, Xmax, Xmin, Ymax, Ymin, Color.BLUE, "Sardines",
+        super(100, 10, 12, Xmax, Xmin, Ymax, Ymin, Color.BLUE, "Sardines",
                 // Les sardines n'ont pas de proies.
                 new ArrayList<String>(),
                 // Les sardines fuient les requins.

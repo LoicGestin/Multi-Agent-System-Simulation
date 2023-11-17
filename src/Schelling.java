@@ -7,10 +7,10 @@ import java.util.Random;
 public class Schelling extends CellularGame {
     // HashMaps pour suivre l'état des habitations vacantes
     private final HashMap<String, Boolean> vacant;
-    private final HashMap<String, Boolean> init_vacant;
+    private final HashMap<String, Boolean> initVacant;
     // Paramètres du jeu
     private final int k;
-    private final int nombre_famille;
+    private final int nombreFamille;
     // Tableau de couleurs représentant les familles
     private final Color[] colors;
     // Tableau de probabilités de répartition des familles
@@ -19,27 +19,27 @@ public class Schelling extends CellularGame {
     private final Random random;
 
     // Constructeur de la classe Schelling
-    public Schelling(int n, int m, int k, int nombre_famille, Color[] c, int[] proba) {
+    public Schelling(int n, int m, int k, int nombreFamille, Color[] c, int[] proba) {
         // Appelle le constructeur de la classe parente (CellularGame) avec les dimensions spécifiées
         super(n, m);
         // Initialise les paramètres du jeu
-        this.nombre_famille = nombre_famille;
+        this.nombreFamille = nombreFamille;
         this.colors = c;
         this.k = k;
         this.vacant = new HashMap<>();
-        this.init_vacant = new HashMap<>();
+        this.initVacant = new HashMap<>();
         this.repartition = proba;
         this.random = new Random();
         // Initialise la carte du jeu
-        this.create_map();
+        this.createMap();
     }
 
     // Méthode pour initialiser la carte du jeu avec des familles et des habitations vacantes
-    public void create_map() {
+    public void createMap() {
         int totalCells = this.getN() * this.getM();
 
         // Place les familles sur la carte selon les probabilités de répartition
-        for (int i = 0; i < this.nombre_famille; i++) {
+        for (int i = 0; i < this.nombreFamille; i++) {
             int familySize = (this.repartition[i] * totalCells) / 100;
             for (int j = 0; j < familySize; j++) {
                 int row, col;
@@ -50,7 +50,7 @@ public class Schelling extends CellularGame {
 
 
                 this.getGrid()[row][col] = i + 1; // Les familles sont numérotées à partir de 1
-                this.getInitial_grid()[row][col] = i + 1;
+                this.getInitialGrid()[row][col] = i + 1;
 
             }
         }
@@ -60,10 +60,10 @@ public class Schelling extends CellularGame {
             for (int j = 0; j < this.getM(); j++) {
                 if (this.getGrid()[i][j] == 0) {
                     vacant.put(i + "," + j, true);
-                    init_vacant.put(i + "," + j, true);
+                    initVacant.put(i + "," + j, true);
                 } else {
                     vacant.put(i + "," + j, false);
-                    init_vacant.put(i + "," + j, false);
+                    initVacant.put(i + "," + j, false);
                 }
             }
         }
@@ -73,9 +73,9 @@ public class Schelling extends CellularGame {
     @Override
     public void update() {
         // HashMap temporaire pour stocker l'état des habitations vacantes
-        HashMap<String, Boolean> cache_vacant = new HashMap<>();
+        HashMap<String, Boolean> cacheVacant = new HashMap<>();
         // Grille temporaire pour stocker les nouveaux états des cellules
-        int[][] cache_grid = new int[this.getN()][this.getM()];
+        int[][] cacheGrid = new int[this.getN()][this.getM()];
 
         // Parcourt toutes les cellules de la grille
         for (int i = 0; i < this.getN(); i++) {
@@ -83,11 +83,11 @@ public class Schelling extends CellularGame {
                 int etat = this.getGrid()[i][j];
                 // Si la cellule n'est pas vacante
                 if (etat != 0) {
-                    int voisin = calcul_voisin(i, j, etat);
+                    int voisin = calculVoisin(i, j, etat);
                     // Si le nombre de voisins de la même famille est inférieur à k
                     if (voisin < k) {
                         // Trouve une habitation vacante aléatoire
-                        String coordVacante = trouverHabitationVacanteAleatoire(cache_vacant);
+                        String coordVacante = trouverHabitationVacanteAleatoire(cacheVacant);
 
                         // Si une habitation vacante est trouvée
                         if (coordVacante != null) {
@@ -95,38 +95,38 @@ public class Schelling extends CellularGame {
                             int newRow = Integer.parseInt(coord[0]);
                             int newCol = Integer.parseInt(coord[1]);
                             // Déplace la famille vers la nouvelle habitation
-                            cache_grid[newRow][newCol] = etat;
-                            cache_grid[i][j] = 0;
+                            cacheGrid[newRow][newCol] = etat;
+                            cacheGrid[i][j] = 0;
 
                             // Met à jour l'état des habitations vacantes
-                            cache_vacant.put(coordVacante, false);
-                            cache_vacant.put(i + "," + j, true);
+                            cacheVacant.put(coordVacante, false);
+                            cacheVacant.put(i + "," + j, true);
                         }
                     } else {
                         // La cellule reste inchangée
-                        cache_grid[i][j] = this.getGrid()[i][j];
-                        cache_vacant.put(i + "," + j, false);
+                        cacheGrid[i][j] = this.getGrid()[i][j];
+                        cacheVacant.put(i + "," + j, false);
                     }
                 }
             }
         }
         // Met à jour l'état des habitations vacantes
-        for (String coord : cache_vacant.keySet()) {
-            vacant.put(coord, cache_vacant.get(coord));
+        for (String coord : cacheVacant.keySet()) {
+            vacant.put(coord, cacheVacant.get(coord));
         }
         // Met à jour la grille principale avec les nouveaux états calculés
-        this.setGrid(cache_grid);
+        this.setGrid(cacheGrid);
     }
 
     // Méthode pour trouver une habitation vacante aléatoire parmi celles disponibles
-    private String trouverHabitationVacanteAleatoire(HashMap<String, Boolean> cache_vacant) {
+    private String trouverHabitationVacanteAleatoire(HashMap<String, Boolean> cacheVacant) {
         ArrayList<String> habitationsVacantes = new ArrayList<>();
 
         // Parcourt les habitations vacantes
         for (String coord : vacant.keySet()) {
-            if (cache_vacant.containsKey(coord)) {
+            if (cacheVacant.containsKey(coord)) {
 
-                if (cache_vacant.get(coord)) {
+                if (cacheVacant.get(coord)) {
                     habitationsVacantes.add(coord);
                 }
             } else {
@@ -159,16 +159,16 @@ public class Schelling extends CellularGame {
         // Réinitialise l'état des habitations vacantes et de la grille principale
         for (int i = 0; i < this.getN(); i++) {
             for (int j = 0; j < this.getM(); j++) {
-                this.vacant.put(i + "," + j, this.init_vacant.get(i + "," + j));
-                this.getGrid()[i][j] = this.getInitial_grid()[i][j];
+                this.vacant.put(i + "," + j, this.initVacant.get(i + "," + j));
+                this.getGrid()[i][j] = this.getInitialGrid()[i][j];
             }
         }
     }
 
     // Méthode pour calculer le prochain état d'une cellule à la position spécifiée
     @Override
-    public int next_etat(int x, int y) {
+    public int nextEtat(int x, int y) {
         // Incrémente l'état actuel de la cellule modulo le nombre de familles, ou la réinitialise à 0
-        return this.getGrid()[y][x] < this.nombre_famille ? this.getGrid()[y][x] + 1 : 0;
+        return this.getGrid()[y][x] < this.nombreFamille ? this.getGrid()[y][x] + 1 : 0;
     }
 }

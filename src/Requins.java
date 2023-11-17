@@ -15,8 +15,8 @@ public class Requins extends Essaim {
 
     // Règle spécifique aux requins : Si un requin touche une de ses proies, la proie disparait (mangé).
     private void rule6(Boid boid) {
-        ArrayList<Essaim> Essaims_voisins = this.getOthers();
-        for (Essaim essaim : Essaims_voisins) {
+        ArrayList<Essaim> essaimsVoisins = this.getOthers();
+        for (Essaim essaim : essaimsVoisins) {
             if (!Objects.equals(essaim.getName(), "Requins")) {
                 ArrayList<Boid> cache = new ArrayList<>();
                 for (Boid b : essaim.getBoids()) {
