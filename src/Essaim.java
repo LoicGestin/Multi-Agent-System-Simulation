@@ -11,7 +11,7 @@ public abstract class Essaim implements Game {
     // Liste des autres essaims
     private final ArrayList<Essaim> others = new ArrayList<>();
     // Liste des boids initiaux (pour la réinitialisation)
-    private final ArrayList<Boid> init_boids = new ArrayList<>();
+    private final ArrayList<Boid> initBoids = new ArrayList<>();
     // Liste des proies (noms d'autres essaims considérés comme proies)
     private final ArrayList<String> proies;
     // Liste des prédateurs (noms d'autres essaims considérés comme prédateurs)
@@ -47,7 +47,7 @@ public abstract class Essaim implements Game {
     public void addBoid(Vector poistion, Vector vitesse) {
         this.boids.add(new Boid(poistion, vitesse));
         if (!start) {
-            this.init_boids.add(new Boid(poistion, vitesse));
+            this.initBoids.add(new Boid(poistion, vitesse));
         }
     }
 
@@ -71,7 +71,7 @@ public abstract class Essaim implements Game {
             Vector v2 = new Vector(b1 * random.nextInt((int) this.vlim) + b1, b2 * random.nextInt((int) this.vlim) + b2);
 
             this.boids.add(new Boid(v1, v2));
-            this.init_boids.add(new Boid(v1, v2));
+            this.initBoids.add(new Boid(v1, v2));
         }
     }
 
@@ -207,7 +207,7 @@ public abstract class Essaim implements Game {
     }
 
     // Méthode pour ajuster la position du boid lorsque celle-ci dépasse les limites de l'environnement
-    public void circle_position(Boid b) {
+    public void circlePosition(Boid b) {
         if (b.getPosition().getX() > this.Xmax + 100) {
             b.getPosition().setX(0);
         } else if (b.getPosition().getX() < 0) {
@@ -222,25 +222,25 @@ public abstract class Essaim implements Game {
     }
 
     // Méthode pour limiter la vitesse d'un boid
-    public void limit_velocity(Boid b) {
+    public void limitVelocity(Boid b) {
         if (b.getVitesse().magnitude() > vlim) {
             b.setVitesse(b.getVitesse().division(b.getVitesse().magnitude()).multiplication(vlim));
         }
     }
 
     // Méthode pour déplacer tous les boids vers de nouvelles positions
-    public void move_all_boids_to_new_position() {
-        ArrayList<Boid> cache_boid = new ArrayList<>(this.boids);
+    public void moveAllBoidsToNewPosition() {
+        ArrayList<Boid> cacheBoid = new ArrayList<>(this.boids);
 
         for (int i = 0; i < this.boids.size(); i++) {
             Boid b = this.boids.get(i).copy();
 
             ArrayList<Vector> vectors = rules(b);
-            ArrayList<Vector> priority_rules = priority_rules(b);
+            ArrayList<Vector> priorityRules = priorityRules(b);
             boolean priority = false;
-            for (Vector v : priority_rules) {
+            for (Vector v : priorityRules) {
                 if (v.getX() != 0 || v.getY() != 0) {
-                    cache_boid.get(i).setVitesse(v);
+                    cacheBoid.get(i).setVitesse(v);
                     priority = true;
                     break;
                 }
@@ -250,18 +250,18 @@ public abstract class Essaim implements Game {
                 for (Vector v : vectors) {
                     vector = vector.addition(v);
                 }
-                cache_boid.get(i).setVitesse(b.getVitesse().addition(vector));
+                cacheBoid.get(i).setVitesse(b.getVitesse().addition(vector));
             }
-            //cache_boid.get(i).setVitesse(cache_boid.get(i).getVitesse().addition(this.bound_position(cache_boid.get(i))));
-            this.limit_velocity(cache_boid.get(i));
+            //cacheBoid.get(i).setVitesse(cacheBoid.get(i).getVitesse().addition(this.boundPosition(cacheBoid.get(i))));
+            this.limitVelocity(cacheBoid.get(i));
 
 
-            cache_boid.get(i).setPosition(b.getPosition().addition(cache_boid.get(i).getVitesse()));
-            circle_position(cache_boid.get(i));
+            cacheBoid.get(i).setPosition(b.getPosition().addition(cacheBoid.get(i).getVitesse()));
+            circlePosition(cacheBoid.get(i));
 
         }
 
-        this.boids = cache_boid;
+        this.boids = cacheBoid;
     }
 
     // Méthode pour appliquer les règles de déplacement non prioritaire à un boid (cohésion / séparation / alignement)
@@ -275,7 +275,7 @@ public abstract class Essaim implements Game {
     }
 
     // Méthode pour appliquer les règles de priorité à un boid (Chasser et fuire passent devant toute les autres rgèles)
-    public ArrayList<Vector> priority_rules(Boid boid) {
+    public ArrayList<Vector> priorityRules(Boid boid) {
         ArrayList<Vector> vectors = new ArrayList<>();
         vectors.add(rule5(boid));
         vectors.add(rule4(boid));
@@ -291,14 +291,14 @@ public abstract class Essaim implements Game {
 
     public void reInit() {
         this.boids.clear();
-        for (Boid init_boid : this.init_boids) {
-            this.boids.add(init_boid.copy());
+        for (Boid initBoid : this.initBoids) {
+            this.boids.add(initBoid.copy());
         }
     }
 
-    // Met à jour la position des boids en appelant la méthode interne move_all_boids_to_new_position().
+    // Met à jour la position des boids en appelant la méthode interne moveAllBoidsToNewPosition().
     public void update() {
-        this.move_all_boids_to_new_position();
+        this.moveAllBoidsToNewPosition();
         this.start = true;
     }
 
@@ -367,7 +367,7 @@ public abstract class Essaim implements Game {
     public String toString() {
         return "Essaim{" +
                 "boids=" + boids +
-                ", init_boids=" + init_boids +
+                ", initBoids=" + initBoids +
                 ", distance=" + distance +
                 ", vlim=" + vlim +
                 ", size=" + size +
