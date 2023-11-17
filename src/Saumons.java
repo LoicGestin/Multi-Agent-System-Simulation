@@ -7,7 +7,7 @@ import java.util.List;
 public class Saumons extends Essaim {
     // Constructeur de la classe Saumons qui initialise les propriétés de l'essaim de saumons.
     public Saumons(int Xmax, int Xmin, int Ymax, int Ymin) {
-        super(100, 15, 5, Xmax, Xmin, Ymax, Ymin, Color.YELLOW, "Saumons",
+        super(100, 15, 11, Xmax, Xmin, Ymax, Ymin, Color.YELLOW, "Saumons",
                 // Les saumons n'ont pas de proies.
                 new ArrayList<String>(),
                 // Les saumons fuit les requins.

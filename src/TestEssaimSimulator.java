@@ -17,7 +17,7 @@ public class TestEssaimSimulator {
 
         essaim2.genereEsseim(150);
         essaim.genereEsseim(150);
-        essaim3.genereEsseim(5);
+        essaim3.genereEsseim(25);
 
         groupeEssaim.addEsaim(essaim3);
         groupeEssaim.addEsaim(essaim);
