@@ -252,6 +252,8 @@ public abstract class Essaim implements Game {
                 }
                 cache_boid.get(i).setVitesse(b.getVitesse().addition(vector));
             }
+            // la répulsion s'applique toujours même si règle prioritaire
+            cache_boid.get(i).setVitesse(cache_boid.get(i).getVitesse().addition(rule2(b)));
             //cache_boid.get(i).setVitesse(cache_boid.get(i).getVitesse().addition(this.bound_position(cache_boid.get(i))));
             this.limit_velocity(cache_boid.get(i));
 
@@ -268,7 +270,7 @@ public abstract class Essaim implements Game {
     public ArrayList<Vector> rules(Boid boid) {
         ArrayList<Vector> vectors = new ArrayList<>();
         vectors.add(rule1(boid));
-        vectors.add(rule2(boid));
+        //vectors.add(rule2(boid));
         vectors.add(rule3(boid));
 
         return vectors;
