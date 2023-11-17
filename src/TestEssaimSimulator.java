@@ -15,9 +15,9 @@ public class TestEssaimSimulator {
         Essaim essaim3 = new Requins(1400, 100, 900, 100);
 
 
-        essaim2.genereEsseim(150);
+        essaim2.genereEsseim(75);
         essaim.genereEsseim(150);
-        essaim3.genereEsseim(25);
+        essaim3.genereEsseim(15);
 
         groupeEssaim.addEsaim(essaim3);
         groupeEssaim.addEsaim(essaim);
