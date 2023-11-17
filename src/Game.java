@@ -1,7 +1,5 @@
 import gui.GUISimulator;
 
-import java.awt.*;
-
 // Interface représentant un jeu
 public interface Game {
     // Réinitialise l'état du jeu à son état initial

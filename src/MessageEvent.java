@@ -1,5 +1,5 @@
 public class MessageEvent extends Event {
-    private String message;
+    private final String message;
 
     public MessageEvent(long date, String message) {
         super(date);

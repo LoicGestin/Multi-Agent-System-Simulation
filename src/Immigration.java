@@ -2,9 +2,10 @@ import java.awt.*;
 import java.util.Random;
 
 // Classe Immigration, qui étend la classe abstraite CellularGame et représente le jeu d'Immigration.
-public class Immigration extends CellularGame{
+public class Immigration extends CellularGame {
     // Constructeur de la classe Immigration
-    private int nombre_etat;
+    private final int nombre_etat;
+
     public Immigration(int n, int m, int nombre_etat) {
         super(n, m);
         this.nombre_etat = nombre_etat;
@@ -22,11 +23,13 @@ public class Immigration extends CellularGame{
             }
         }
     }
+
     // Méthode de la classe : calcule le prochain état d'une cellule à la position spécifiée
     @Override
     public int next_etat(int x, int y) {
         return (this.getGrid()[y][x] + 1) % nombre_etat;
     }
+
     // Méthode de la classe : met à jour l'état du jeu selon les règles spécifiques du jeu d'Immigration
     @Override
     public void update() {
@@ -38,14 +41,15 @@ public class Immigration extends CellularGame{
                 // Calcule le prochain état de la cellule en cours
                 int next_etat = (this.getGrid()[i][j] + 1) % nombre_etat;
                 // Calcule le nombre de voisins ayant le prochain état
-                int voisin = this.calcul_voisin(i,j, next_etat);
+                int voisin = this.calcul_voisin(i, j, next_etat);
                 // Applique la règle du jeu d'Immigration pour mettre à jour l'état de la cellule
-                cache_grid[i][j] = voisin >= 3 ? (this.getGrid()[i][j] + 1 )% nombre_etat : this.getGrid()[i][j];
+                cache_grid[i][j] = voisin >= 3 ? (this.getGrid()[i][j] + 1) % nombre_etat : this.getGrid()[i][j];
             }
         }
         // Met à jour la grille principale avec les nouveaux états calculés
         this.setGrid(cache_grid);
     }
+
     // Méthode de la classe : retourne la couleur d'une cellule à la position spécifiée
     @Override
     public Color getColor(int i, int j) {

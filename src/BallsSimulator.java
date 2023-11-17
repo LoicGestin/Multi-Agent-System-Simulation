@@ -3,24 +3,23 @@ import gui.Oval;
 import gui.Simulable;
 
 import java.awt.*;
-import java.util.Random;
 
-public class BallsSimulator implements Simulable{
+public class BallsSimulator implements Simulable {
     private final Balls balls;
 
     private final GUISimulator gui;
 
-    private final EventManager manager = new EventManager();
-    public BallsSimulator(Balls balls,GUISimulator gui){
+    public BallsSimulator(Balls balls, GUISimulator gui) {
         this.gui = gui;
         this.balls = balls;
         this.draw();
 
 
     }
+
     @Override
     public void next() {
-        this.balls.translate(10,10,500,500);
+        this.balls.translate(10, 10, 500, 500);
         this.draw();
 
     }
@@ -30,7 +29,8 @@ public class BallsSimulator implements Simulable{
         this.balls.reInit();
         this.draw();
     }
-    public void draw(){
+
+    public void draw() {
         gui.reset();
 
         for (int i = 0; i < this.balls.getBalls().size(); i++) {
@@ -43,7 +43,6 @@ public class BallsSimulator implements Simulable{
             ));
         }
     }
-
 
 
 }

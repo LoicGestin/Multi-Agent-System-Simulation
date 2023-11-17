@@ -11,8 +11,9 @@ public class GameSimulator implements Simulable {
     private final Game game;
     private final GUISimulator gui;
     private final EventManager eventManager;
+
     // Constructeur prenant en paramètre le jeu à simuler (implementant l'interface Game) et le GUISimulator.
-    public GameSimulator(Game game, GUISimulator gui){
+    public GameSimulator(Game game, GUISimulator gui) {
         this.game = game;
         this.gui = gui;
         // Création et initialisation de l'EventManager.
@@ -49,11 +50,13 @@ public class GameSimulator implements Simulable {
             }
         });
     }
+
     // Gestion des clics de souris.
     public void handleMouseClick(int x, int y) {
-        this.game.handleClick(x,y,this.gui.getPanelWidth(), this.gui.getPanelHeight());
+        this.game.handleClick(x, y, this.gui.getPanelWidth(), this.gui.getPanelHeight());
         this.game.draw(gui);
     }
+
     // Méthode appelée à chaque itération de la simulation.
     @Override
     public void next() {
@@ -61,6 +64,7 @@ public class GameSimulator implements Simulable {
         this.eventManager.next();
         this.game.draw(gui);
     }
+
     // Méthode appelée pour réinitialiser la simulation.
     @Override
     public void restart() {
@@ -71,7 +75,6 @@ public class GameSimulator implements Simulable {
 
         this.game.draw(gui);
     }
-
 
 
 }

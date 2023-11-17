@@ -1,16 +1,12 @@
 package gui;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Stroke;
+import java.awt.*;
 
 public class Triangle extends CenteredGraphicalElement {
-    private Color drawColor;
-    private Color fillColor;
-    private int[] xPoints;
-    private int[] yPoints;
+    private final Color drawColor;
+    private final Color fillColor;
+    private final int[] xPoints;
+    private final int[] yPoints;
 
     public Triangle(int[] xPoints, int[] yPoints, Color drawColor, Color fillColor) {
         super(computeCenterX(xPoints), computeCenterY(yPoints));
