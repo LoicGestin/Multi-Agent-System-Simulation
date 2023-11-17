@@ -11,32 +11,23 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serial;
 import java.util.Objects;
 
 public class GUISimulator extends JFrame {
+    @Serial
     private static final long serialVersionUID = 1L;
-    private static final int INIT_SPEED = 100;
-    private static final int MIN_SPEED = 1;
-    private static final int MAX_SPEED = 10000;
-    private static final int STEP_SPEED = 10;
-    private final JScrollPane sp;
     private final SimulationPanel simuPanel;
-    private final JPanel controlPanel;
-    private final JButton restartButton;
     private final JButton playPauseButton;
-    private final JButton nextButton;
-    private final JLabel speedLabel;
     private final JSpinner speedSpinner;
-    private final JLabel stepLabel;
     private final JSpinner stepSpinner;
-    private final JButton exitButton;
     private final JComboBox<String> selectBox;
-    private int panelWidth;
-    private int panelHeight;
-    private int numberTickInStep;
     private final Timer timer;
+    private final int panelWidth;
+    private final int panelHeight;
+    private int numberTickInStep;
     private Simulable simulator;
-    private boolean warning;
+    private final boolean warning;
 
     public GUISimulator(int var1, int var2, Color var3) {
         this(var1, var2, var3, new DefaultSimulator());
@@ -52,59 +43,55 @@ public class GUISimulator extends JFrame {
 
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-        } catch (UnsupportedLookAndFeelException var8) {
-        } catch (ClassNotFoundException var9) {
-        } catch (InstantiationException var10) {
-        } catch (IllegalAccessException var11) {
+        } catch (UnsupportedLookAndFeelException | InstantiationException | ClassNotFoundException |
+                 IllegalAccessException ignored) {
         }
 
         this.simuPanel = new SimulationPanel(var1, var2, var3);
-        this.sp = new JScrollPane(this.simuPanel);
-        this.sp.setPreferredSize(new Dimension(Math.min(800, var1), Math.min(600, var2)));
+        JScrollPane sp = new JScrollPane(this.simuPanel);
+        sp.setPreferredSize(new Dimension(Math.min(800, var1), Math.min(600, var2)));
         this.panelWidth = var1;
         this.panelHeight = var2;
         this.simuPanel.setBackground(var3);
         JPanel var5 = new JPanel(new GridLayout(2, 2));
-        this.speedLabel = new JLabel("Tps entre 2 affichages (ms) :");
+        JLabel speedLabel = new JLabel("Tps entre 2 affichages (ms) :");
         this.speedSpinner = new JSpinner(new SpinnerNumberModel(100, 1, 10000, 10));
-        var5.add(this.speedLabel);
+        var5.add(speedLabel);
         var5.add(this.speedSpinner);
-        this.stepLabel = new JLabel("Nb de pas simulés entre 2 affichages :");
+        JLabel stepLabel = new JLabel("Nb de pas simulés entre 2 affichages :");
         this.stepSpinner = new JSpinner(new SpinnerNumberModel(1, 1, 10000, 10));
-        var5.add(this.stepLabel);
+        var5.add(stepLabel);
         var5.add(this.stepSpinner);
-        this.selectBox = new JComboBox();
-        this.selectBox.addItemListener((var1x) -> {
-            var4.selectedItem((String) var1x.getItem());
-        });
-        this.restartButton = new JButton("Début");
+        this.selectBox = new JComboBox<>();
+        this.selectBox.addItemListener((var1x) -> var4.selectedItem((String) var1x.getItem()));
+        JButton restartButton = new JButton("Début");
         this.playPauseButton = new JButton("Lecture");
-        this.nextButton = new JButton("Suivant");
-        this.exitButton = new JButton("Quitter");
+        JButton nextButton = new JButton("Suivant");
+        JButton exitButton = new JButton("Quitter");
         JPanel var6 = new JPanel();
         var6.add(this.playPauseButton);
-        var6.add(this.nextButton);
-        var6.add(this.restartButton);
-        var6.add(this.exitButton);
-        this.controlPanel = new JPanel();
-        this.controlPanel.setLayout(new BorderLayout());
-        this.controlPanel.add(var5, "West");
-        this.controlPanel.add(var6, "East");
+        var6.add(nextButton);
+        var6.add(restartButton);
+        var6.add(exitButton);
+        JPanel controlPanel = new JPanel();
+        controlPanel.setLayout(new BorderLayout());
+        controlPanel.add(var5, "West");
+        controlPanel.add(var6, "East");
         this.getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().add(this.sp, "Center");
-        this.getContentPane().add(this.controlPanel, "South");
-        DisplayControler var7 = new DisplayControler(this);
-        this.restartButton.setActionCommand("restart");
-        this.restartButton.addActionListener(var7);
+        this.getContentPane().add(sp, "Center");
+        this.getContentPane().add(controlPanel, "South");
+        DisplayControler var7 = new DisplayControler();
+        restartButton.setActionCommand("restart");
+        restartButton.addActionListener(var7);
         this.playPauseButton.setActionCommand("playPause");
         this.playPauseButton.addActionListener(var7);
-        this.nextButton.setActionCommand("next");
-        this.nextButton.addActionListener(var7);
+        nextButton.setActionCommand("next");
+        nextButton.addActionListener(var7);
         this.speedSpinner.addChangeListener(var7);
         this.stepSpinner.addChangeListener(var7);
-        this.exitButton.setActionCommand("exit");
-        this.exitButton.addActionListener(var7);
-        this.setDefaultCloseOperation(3);
+        exitButton.setActionCommand("exit");
+        exitButton.addActionListener(var7);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.pack();
         this.setVisible(true);
     }
@@ -112,9 +99,7 @@ public class GUISimulator extends JFrame {
     public void setSimulable(Simulable var1) {
         this.simulator = var1;
         if (this.selectBox != null) {
-            this.selectBox.addItemListener((var1x) -> {
-                var1.selectedItem((String) var1x.getItem());
-            });
+            this.selectBox.addItemListener((var1x) -> var1.selectedItem((String) var1x.getItem()));
         }
 
     }
@@ -125,10 +110,6 @@ public class GUISimulator extends JFrame {
 
     public int getPanelHeight() {
         return this.panelHeight;
-    }
-
-    private JPanel getSimulationPanel() {
-        return this.simuPanel;
     }
 
     public void addGraphicalElement(GraphicalElement var1) {
@@ -145,27 +126,6 @@ public class GUISimulator extends JFrame {
         this.repaint();
     }
 
-    public void resizePanel(int var1, int var2) {
-        this.panelHeight = var2;
-        this.panelWidth = var1;
-        this.simuPanel.setPreferredSize(new Dimension(var1, var2));
-        this.sp.revalidate();
-        this.simuPanel.revalidate();
-    }
-
-    public void addItemToList(String var1) {
-        this.selectBox.addItem(var1);
-        if (this.selectBox.getItemCount() == 1) {
-            this.controlPanel.add(this.selectBox);
-            this.pack();
-        }
-
-    }
-
-    public void setWarning(boolean var1) {
-        this.warning = var1;
-    }
-
     public SimulationPanel getSimuPanel() {
         return simuPanel;
     }
@@ -173,7 +133,7 @@ public class GUISimulator extends JFrame {
     private class DisplayControler implements ActionListener, ChangeListener {
         private boolean play;
 
-        public DisplayControler(GUISimulator var2) {
+        public DisplayControler() {
             this.init();
         }
 

@@ -5,11 +5,12 @@ package gui;//
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serial;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class SimulationPanel extends JPanel {
+    @Serial
     private static final long serialVersionUID = 1L;
     private final int width;
     private final int height;
@@ -27,7 +28,7 @@ public class SimulationPanel extends JPanel {
     }
 
     protected void reset() {
-        this.shapes = new LinkedList();
+        this.shapes = new LinkedList<>();
         this.repaint();
     }
 
@@ -46,14 +47,9 @@ public class SimulationPanel extends JPanel {
         var2.setColor(this.bgColor);
         var2.fillRect(0, 0, this.width, this.height);
         synchronized (this.shapes) {
-            Iterator var4 = this.shapes.iterator();
 
-            while (true) {
-                if (!var4.hasNext()) {
-                    break;
-                }
+            for (GraphicalElement var5 : this.shapes) {
 
-                GraphicalElement var5 = (GraphicalElement) var4.next();
                 var5.paint(var2);
             }
         }

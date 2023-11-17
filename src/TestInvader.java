@@ -14,7 +14,7 @@ public class TestInvader {
         // crée la fenêtre graphique dans laquelle dessiner
         GUISimulator gui = new GUISimulator(800, 600, Color.BLACK);
         // crée l'invader, en l'associant à la fenêtre graphique précédente
-        Invader invader = new Invader(gui, Color.decode("#f2ff28"));
+        new Invader(gui, Color.decode("#f2ff28"));
     }
 }
 
@@ -64,7 +64,6 @@ class Invader implements Simulable {
      * @param gui   l'interface graphique associée, dans laquelle se fera le
      *              dessin et qui enverra les messages via les méthodes héritées de
      *              Simulable.
-     * @param color la couleur de l'invader
      */
     public Invader(GUISimulator gui, Color invaderColor) {
         this.gui = gui;
@@ -85,12 +84,10 @@ class Invader implements Simulable {
         int yMin = 40;
         int xMax = gui.getWidth() - xMin - 80;
         xMax -= xMax % 10;
-        int yMax = gui.getHeight() - yMin - 120;
-        yMax -= yMax % 10;
 
         // let's plan the invader displacement!
-        List<Integer> xCoords = new ArrayList<Integer>();
-        List<Integer> yCoords = new ArrayList<Integer>();
+        List<Integer> xCoords = new ArrayList<>();
+        List<Integer> yCoords = new ArrayList<>();
         // going right
         for (int x = xMin + 10; x <= xMax; x += 10) {
             xCoords.add(x);
