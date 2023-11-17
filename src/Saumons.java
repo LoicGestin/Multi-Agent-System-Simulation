@@ -15,7 +15,7 @@ public class Saumons extends Essaim {
     }
 
     // Règle spécifique aux saumons : exemple d'une règle "OPEN/CLOSE", qui ne fait rien.
-    private Vector rule6(Boid boid) {
+    private Vector rule6() {
         return new Vector(0.0, 0.0);
     }
 
@@ -23,7 +23,7 @@ public class Saumons extends Essaim {
     @Override
     public ArrayList<Vector> rules(Boid boid) {
         ArrayList<Vector> vectors = super.rules(boid);
-        vectors.add(rule6(boid));
+        vectors.add(rule6());
         return vectors;
     }
 

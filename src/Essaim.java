@@ -20,9 +20,7 @@ public abstract class Essaim implements Game {
     private final double distance;
     private final double vlim;
     private final int Xmax;
-    private final int Xmin;
     private final int Ymax;
-    private final int Ymin;
     private final int size;
     private final Color color;
     private final String name;
@@ -36,9 +34,7 @@ public abstract class Essaim implements Game {
         this.vlim = vlim;
 
         this.Xmax = Xmax;
-        this.Xmin = Xmin;
         this.Ymax = Ymax;
-        this.Ymin = Ymin;
         this.size = size;
 
         this.color = color;

@@ -9,8 +9,8 @@ public class Requins extends Essaim {
 
     public Requins(int Xmax, int Xmin, int Ymax, int Ymin) {
         super(250, 22, 10, Xmax, Xmin, Ymax, Ymin, Color.RED, "Requins",
-                new ArrayList<String>(List.of(new String[]{"Sardines", "Saumons"})),
-                new ArrayList<String>());
+                new ArrayList<>(List.of(new String[]{"Sardines", "Saumons"})),
+                new ArrayList<>());
     }
 
     // Règle spécifique aux requins : Si un requin touche une de ses proies, la proie disparait (mangé).
