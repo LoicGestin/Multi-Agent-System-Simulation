@@ -24,11 +24,11 @@ public class Balls {
         this.posX = new ArrayList<>();
         this.posY = new ArrayList<>();
         for (Point ball : balls) {
-            this.add_ball(ball);
+            this.addBall(ball);
         }
     }
 
-    public void add_ball(Point balle) {
+    public void addBall(Point balle) {
         this.balls.add(balle);
         this.posY.add(balle.y);
         this.posX.add(balle.x);
