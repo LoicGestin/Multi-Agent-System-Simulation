@@ -22,6 +22,11 @@ public class Sardines extends Essaim {
         return new Vector(0, 0);
     }
 
+    @Override
+    public int distanceRepulsion() {
+        return 15;
+    }
+
     // Override la méthode rules de la classe Essaim pour inclure la règle spécifique aux sardines.
     @Override
     public ArrayList<Vector> rules(Boid boid) {

@@ -34,6 +34,11 @@ public class Requins extends Essaim {
         }
     }
 
+    @Override
+    public int distanceRepulsion() {
+        return 30;
+    }
+
     // Override la méthode rules de la classe Essaim pour inclure la règle spécifique aux requins.
     @Override
     public ArrayList<Vector> rules(Boid boid) {

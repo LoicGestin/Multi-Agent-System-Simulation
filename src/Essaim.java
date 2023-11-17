@@ -100,12 +100,12 @@ public abstract class Essaim implements Game {
 
 
     }
-
+    public abstract int distanceRepulsion();
     // Méthode pour appliquer la règle d'éloignement (separation) à un boid
     public Vector rule2(Boid boid) {
         Vector c = new Vector(0, 0);
 
-        ArrayList<Boid> voisins = getVoisinsAvecAngle(boid, 30);
+        ArrayList<Boid> voisins = getVoisinsAvecAngle(boid, distanceRepulsion());
 
         for (Boid b : voisins) {
             c = c.soustraction(b.getPosition().soustraction(boid.getPosition()));

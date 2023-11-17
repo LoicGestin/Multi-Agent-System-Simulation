@@ -18,6 +18,11 @@ public class CustomFish extends Essaim {
 
 
     @Override
+    public int distanceRepulsion() {
+        return 30;
+    }
+
+    @Override
     public void setUpEvent(EventManager eventManager) {
         eventManager.addEvent(new ActionEvent(0, eventManager, this.pas, this));
     }
