@@ -5,7 +5,7 @@ import java.awt.*;
 // Classe abstraite représentant un jeu basé sur une grille cellulaire
 public abstract class CellularGame implements Game {
     // Grille représentant l'état initial du jeu
-    private final int[][] initial_grid;
+    private final int[][] initialGrid;
     // Dimensions de la grille
     private final int n;
     private final int m;
@@ -22,21 +22,21 @@ public abstract class CellularGame implements Game {
 
     public CellularGame(int n, int m) {
         this.grid = new int[n][m];
-        this.initial_grid = new int[n][m];
+        this.initialGrid = new int[n][m];
         this.n = n;
         this.m = m;
     }
 
     // Initialise une cellule avec un état spécifié
-    public void make_alive(int y, int x, int etat) {
+    public void makeAlive(int y, int x, int etat) {
         this.grid[y][x] = etat;
         if (!start) {
-            this.initial_grid[y][x] = etat;
+            this.initialGrid[y][x] = etat;
         }
     }
 
     // Calcule le nombre de voisins d'une cellule avec un état spécifié
-    public int calcul_voisin(int i, int j, int etat) {
+    public int calculVoisin(int i, int j, int etat) {
         start = true;
         int voisin = 0;
         // Calcul des coordonnées des voisins
@@ -64,7 +64,7 @@ public abstract class CellularGame implements Game {
     public void reInit() {
         start = false;
         for (int i = 0; i < this.n; i++) {
-            if (this.m >= 0) System.arraycopy(this.initial_grid[i], 0, this.grid[i], 0, this.m);
+            if (this.m >= 0) System.arraycopy(this.initialGrid[i], 0, this.grid[i], 0, this.m);
         }
     }
 
@@ -85,8 +85,8 @@ public abstract class CellularGame implements Game {
     }
 
     // Retourne la grille initiale du jeu
-    public int[][] getInitial_grid() {
-        return initial_grid;
+    public int[][] getInitialGrid() {
+        return initialGrid;
     }
 
     // Retourne la hauteur de la grille
@@ -124,13 +124,13 @@ public abstract class CellularGame implements Game {
     // Méthode de l'interface Game : gère le clic de souris à la position spécifiée
     @Override
     public void handleClick(int x, int y, int PanelX, int PanelY) {
-        int block_width = (PanelX / this.n);
-        int block_height = (PanelY / this.n);
+        int blockWidth = (PanelX / this.n);
+        int blockHeight = (PanelY / this.n);
 
-        int gridX = x / block_width;
-        int gridY = y / block_height;
+        int gridX = x / blockWidth;
+        int gridY = y / blockHeight;
         if (gridX < this.m && gridY < this.n) {
-            make_alive(gridY, gridX, next_etat(gridX, gridY));
+            makeAlive(gridY, gridX, nextEtat(gridX, gridY));
         }
 
     }
@@ -139,11 +139,11 @@ public abstract class CellularGame implements Game {
     @Override
     public void handleMouseMotion(int x, int y, GUISimulator gui) {
 
-        int block_width = (gui.getPanelWidth() / this.n);
-        int block_height = (gui.getPanelHeight() / this.n);
+        int blockWidth = (gui.getPanelWidth() / this.n);
+        int blockHeight = (gui.getPanelHeight() / this.n);
 
-        int gridX = x / block_width;
-        int gridY = y / block_height;
+        int gridX = x / blockWidth;
+        int gridY = y / blockHeight;
         if (gridX < this.m && gridY < this.n) {
             if (lastX != gridX || lastY != gridY) {
                 gui.addGraphicalElement(new gui.Rectangle(
@@ -168,5 +168,5 @@ public abstract class CellularGame implements Game {
     }
 
     // Méthode abstraite : retourne l'état suivant d'une case
-    public abstract int next_etat(int x, int y);
+    public abstract int nextEtat(int x, int y);
 }
