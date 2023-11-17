@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -30,6 +31,13 @@ public class Schelling extends CellularGame {
         this.initVacant = new HashMap<>();
         this.repartition = proba;
         this.random = new Random();
+        if(Arrays.stream(this.repartition).sum() > 100 ){
+            throw new IllegalStateException("La somme de repartition ne doit pas dépasser 100");
+        }
+        if(this.nombreFamille != this.repartition.length || this.nombreFamille != this.colors.length){
+            throw new IllegalStateException("Le nombre de famille spécifié n'est pas le même que le nombre de couleurs ou de répartition");
+        }
+
         // Initialise la carte du jeu
         this.createMap();
     }
